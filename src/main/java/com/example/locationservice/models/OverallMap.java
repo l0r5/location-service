@@ -1,7 +1,7 @@
 package com.example.locationservice.models;
 
 import com.example.locationservice.dtos.UserLocationDto;
-import com.example.locationservice.services.MapHandler;
+import com.example.locationservice.services.OverallMapService;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.Map;
 @Data
 @Entity
 @Component
-public class OverallMap implements MapHandler {
+public class OverallMap implements OverallMapService {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

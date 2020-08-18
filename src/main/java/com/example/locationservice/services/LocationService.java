@@ -13,9 +13,9 @@ import java.util.Map;
 public class LocationService {
 
     private final Logger log = LoggerFactory.getLogger(LocationService.class);
-    private final MapHandler mapHandler;
+    private final OverallMapService mapHandler;
 
-    public LocationService(MapHandler mapHandler) {
+    public LocationService(OverallMapService mapHandler) {
         this.mapHandler = mapHandler;
     }
 
