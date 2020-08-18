@@ -1,5 +1,6 @@
 package com.example.locationservice.controllers;
 
+import com.example.locationservice.dtos.OverallMapDto;
 import com.example.locationservice.dtos.UserLocationDto;
 import com.example.locationservice.services.LocationService;
 import org.slf4j.Logger;
@@ -20,9 +21,9 @@ public class LocationController {
     }
 
     @GetMapping("/overall-map")
-    public String overallMap() {
+    public OverallMapDto overallMap() {
         log.info("GET /overall-map triggered.");
-        return locationService.getOverallMapDto().toString();
+        return locationService.getOverallMapDto();
     }
 
     @GetMapping("/add-user-location")

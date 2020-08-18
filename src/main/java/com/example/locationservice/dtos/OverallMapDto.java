@@ -9,6 +9,5 @@ import java.util.Map;
 @Data
 @Builder
 public class OverallMapDto {
-    private long id;
     private Map<Integer, String> locations;
 }
