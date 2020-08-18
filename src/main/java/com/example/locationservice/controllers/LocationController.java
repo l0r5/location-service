@@ -4,7 +4,6 @@ import com.example.locationservice.dtos.UserLocationDto;
 import com.example.locationservice.services.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,8 +13,11 @@ public class LocationController {
 
     private final Logger log = LoggerFactory.getLogger(LocationController.class);
 
-    @Autowired
-    private LocationService locationService;
+    private final LocationService locationService;
+
+    public LocationController(LocationService locationService) {
+        this.locationService = locationService;
+    }
 
     @GetMapping("/overall-map")
     public String overallMap() {
@@ -24,9 +26,9 @@ public class LocationController {
     }
 
     @GetMapping("/add-user-location")
-    public UserLocationDto addUserLocation(@RequestParam(value = "uuid") int uuid) {
+    public UserLocationDto addUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
         log.info("GET /add-user-location?uuid={} triggered.", uuid);
-        locationService.addUserLocation(uuid, "Address");
+        locationService.addUserLocation(uuid, location);
         return locationService.getUserLocation(uuid);
     }
 
@@ -37,8 +39,8 @@ public class LocationController {
     }
 
     @GetMapping("/update-user-location")
-    public String updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "address") String address) {
-        log.info("GET /update-user-location?uuid={}&address={} triggered.", uuid, address);
-        return locationService.updateUserLocation(uuid, address).toString();
+    public String updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
+        log.info("GET /update-user-location?uuid={}&address={} triggered.", uuid, location);
+        return locationService.updateUserLocation(uuid, location).toString();
     }
 }
