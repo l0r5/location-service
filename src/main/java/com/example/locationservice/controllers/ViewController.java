@@ -13,10 +13,17 @@ public class ViewController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping(value = "/location-service")
-    public ModelAndView showLocationServicePage(@RequestParam(required = false) int uuid) {
-        ModelAndView locationServicePage = new ModelAndView("location_service_page");
-        locationServicePage.addObject("dto", locationService.getOverallMapDto());
+    @GetMapping(value = "/")
+    public ModelAndView showLocationServicePage() {
+        ModelAndView locationServicePage = new ModelAndView("start_page");
+        locationServicePage.addObject("overallMapDto", locationService.getOverallMapDto());
+        return locationServicePage;
+    }
+
+    @GetMapping(value = "/update")
+    public ModelAndView showLocationServicePageWithMap(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "address") String location) {
+        ModelAndView locationServicePage = new ModelAndView("start_page");
+        locationServicePage.addObject("overallMapDto", locationService.updateUserLocation(uuid, location));
         return locationServicePage;
     }
 }

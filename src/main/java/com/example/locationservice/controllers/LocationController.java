@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @RestController
 public class LocationController {
 
-    private final AtomicLong counter = new AtomicLong();
     private final Logger log = LoggerFactory.getLogger(LocationController.class);
 
     @Autowired
@@ -29,20 +26,19 @@ public class LocationController {
     @GetMapping("/add-user-location")
     public UserLocationDto addUserLocation(@RequestParam(value = "uuid") int uuid) {
         log.info("GET /add-user-location?uuid={} triggered.", uuid);
-        locationService.addUserLocation(counter.incrementAndGet(), uuid, "Address");
-        return locationService.getUserLocation(counter.get(), uuid);
+        locationService.addUserLocation(uuid, "Address");
+        return locationService.getUserLocation(uuid);
     }
 
     @GetMapping("/get-user-location")
     public UserLocationDto getUserLocation(@RequestParam(value = "uuid") int uuid) {
         log.info("GET /get-user-location?uuid={} triggered.", uuid);
-        return locationService.getUserLocation(counter.incrementAndGet(), uuid);
+        return locationService.getUserLocation(uuid);
     }
 
     @GetMapping("/update-user-location")
     public String updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "address") String address) {
         log.info("GET /update-user-location?uuid={}&address={} triggered.", uuid, address);
-        locationService.updateUserLocation(counter.incrementAndGet(), uuid, address);
-        return "Updated UserLocation.";
+        return locationService.updateUserLocation(uuid, address).toString();
     }
 }

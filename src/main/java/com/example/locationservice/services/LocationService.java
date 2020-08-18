@@ -39,7 +39,7 @@ public class LocationService {
     }
 
     @Transactional
-    public void addUserLocation(long id, int uuid, String location) {
+    public void addUserLocation(int uuid, String location) {
         log.info("Add UserLocation for [uuid]: {}", uuid);
         UserLocationDto newUserLocation = UserLocationDto.builder().uuid(uuid).location(location).build();
         OverallMap overallMap = getOverallMap();
@@ -49,7 +49,7 @@ public class LocationService {
     }
 
     @Transactional
-    public UserLocationDto getUserLocation(long id, int uuid) {
+    public UserLocationDto getUserLocation(int uuid) {
         log.info("Get Location for [uuid]: {}", uuid);
         OverallMap overallMap = getOverallMap();
         String address = overallMap.getUserLocations().get(uuid);
@@ -58,12 +58,13 @@ public class LocationService {
     }
 
     @Transactional
-    public void updateUserLocation(long id, int uuid, String location) {
+    public OverallMapDto updateUserLocation(int uuid, String location) {
         log.info("Update Location for [uuid]: {}", uuid);
         OverallMap overallMap = getOverallMap();
         overallMap.getUserLocations().replace(uuid, location);
         entityManager.persist(overallMap);
         log.info("User Location updated. Old [location]: {}; New [location]: {}", overallMap.getUserLocations().get(uuid), location);
+        return overallMap.getOverallMapDto();
     }
 
     private OverallMap getOverallMap() {

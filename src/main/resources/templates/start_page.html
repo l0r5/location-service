@@ -6,12 +6,15 @@
 </head>
 <body>
     <h1>Location Service Page</h1>
-    <p><span title="${dto.uuid}"></span></p>
+    <p><span title="${overallMapDto}"></span></p>
     <form>
         <label>
             <input type="number" name="uuid">
         </label>
-        <input type="submit">
+        <label>
+            <input type="text" name="address">
+        </label>
+        <input type="submit" value="/update">
     </form>
 </body>
 </html>
