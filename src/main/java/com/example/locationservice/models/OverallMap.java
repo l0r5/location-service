@@ -44,4 +44,9 @@ public class OverallMap implements OverallMapService {
     public void updateUserLocation(UserLocationDto userLocationDto) {
         this.userLocations.replace(userLocationDto.getUuid(), userLocationDto.getLocation());
     }
+
+    @Override
+    public void clearMap() {
+        this.userLocations = new HashMap<>();
+    }
 }

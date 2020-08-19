@@ -14,4 +14,6 @@ public interface OverallMapService {
     void addUserLocation(UserLocationDto userLocationDto);
 
     void updateUserLocation(UserLocationDto userLocationDto);
+
+    void clearMap();
 }
