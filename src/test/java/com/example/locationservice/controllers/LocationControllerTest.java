@@ -1,39 +1,83 @@
 package com.example.locationservice.controllers;
 
+import com.example.locationservice.services.OverallMapService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(SpringExtension.class)
-@WebMvcTest(LocationController.class)
-class LocationControllerIntegrationTest {
+@SpringBootTest
+@AutoConfigureMockMvc
+class LocationControllerTest {
 
+    private final Logger log = LoggerFactory.getLogger(LocationControllerTest.class);
 
-   @Autowired
-   private MockMvc mvc;
+    @Autowired
+    private MockMvc mvc;
 
-    @BeforeEach
-    void setUp() {
-    }
+    @Autowired
+    private OverallMapService overallMapService;
 
     @AfterEach
     void tearDown() {
+        overallMapService.clearMap();
+        log.info("Cleared Map after test run: {}", overallMapService.getAllUserLocations());
     }
 
     @Test
-    void location() throws Exception {
-        RequestBuilder request = MockMvcRequestBuilders.get("/location?uuid=1");
+    void emptyOverallMap() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/overall-map");
         MvcResult result = mvc.perform(request).andReturn();
-        assertEquals("{\"id\":1,\"uuid\":1,\"location\":\"123\"}", result.getResponse().getContentAsString());
+        assertEquals("{\"locations\":{}}", result.getResponse().getContentAsString());
     }
+
+    @Test
+    void addUserLocation() throws Exception {
+        RequestBuilder request = MockMvcRequestBuilders.get("/add-user-location?uuid=1&location=my_location");
+        MvcResult result = mvc.perform(request).andReturn();
+        assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void filledOverallMap() throws Exception {
+        RequestBuilder addUserLocationRequest = MockMvcRequestBuilders.get("/add-user-location?uuid=1&location=my_location");
+        RequestBuilder request = MockMvcRequestBuilders.get("/overall-map");
+        MvcResult resultAdd = mvc.perform(addUserLocationRequest).andReturn();
+        MvcResult result = mvc.perform(request).andReturn();
+        assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", resultAdd.getResponse().getContentAsString());
+        assertEquals("{\"locations\":{\"1\":\"my_location\"}}", result.getResponse().getContentAsString());
+    }
+
+    @Test
+    void getLocationForAddedUser() throws Exception {
+        RequestBuilder addUserLocationRequest = MockMvcRequestBuilders.get("/add-user-location?uuid=1&location=my_location");
+        RequestBuilder getUserLocationRequest = MockMvcRequestBuilders.get("/get-user-location?uuid=1");
+        MvcResult resultAdd = mvc.perform(addUserLocationRequest).andReturn();
+        MvcResult resultGet = mvc.perform(getUserLocationRequest).andReturn();
+        assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", resultAdd.getResponse().getContentAsString());
+        assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", resultGet.getResponse().getContentAsString());
+    }
+
+    @Test
+    void updateLocationForAddedUser() throws Exception {
+        RequestBuilder addUserLocationRequest = MockMvcRequestBuilders.get("/add-user-location?uuid=1&location=my_location");
+        RequestBuilder updateUserLocationRequest = MockMvcRequestBuilders.get("/update-user-location?uuid=1&location=my_new_location");
+        RequestBuilder getUserLocationRequest = MockMvcRequestBuilders.get("/get-user-location?uuid=1");
+        MvcResult resultAdd = mvc.perform(addUserLocationRequest).andReturn();
+        MvcResult resultUpdate = mvc.perform(updateUserLocationRequest).andReturn();
+        MvcResult resultGet = mvc.perform(getUserLocationRequest).andReturn();
+        assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", resultAdd.getResponse().getContentAsString());
+        assertEquals("{\"uuid\":1,\"location\":\"my_new_location\"}", resultUpdate.getResponse().getContentAsString());
+        assertEquals("{\"uuid\":1,\"location\":\"my_new_location\"}", resultGet.getResponse().getContentAsString());
+    }
+
 }
