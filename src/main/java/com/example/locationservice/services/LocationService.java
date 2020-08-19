@@ -26,29 +26,31 @@ public class LocationService {
     }
 
     public OverallMapDto getOverallMapDto() {
-        log.info("OverallMap: {}", mapService.getUserLocations().toString());
-        return OverallMapDto.builder().locations(mapService.getUserLocations()).build();
+        log.info("OverallMap: {}", mapService.getAllUserLocations().toString());
+        return OverallMapDto.builder().locations(mapService.getAllUserLocations()).build();
     }
 
     public void addUserLocation(int uuid, String location) {
         log.info("Add UserLocation for [uuid]: {}", uuid);
         UserLocationDto newUserLocation = UserLocationDto.builder().uuid(uuid).location(location).build();
         mapService.addUserLocation(newUserLocation);
-        log.info("Added new UserLocation to the OverallMap: {}", mapService.getUserLocations().toString());
+        log.info("Added new UserLocation to the OverallMap: {}", mapService.getAllUserLocations().toString());
     }
 
     public UserLocationDto getUserLocation(int uuid) {
         log.info("Get Location for [uuid]: {}", uuid);
-        String location = mapService.getUserLocations().get(uuid);
-        log.info("Got [address]: {} for [uuid]: {}", location, uuid);
-        return UserLocationDto.builder().uuid(uuid).location(location).build();
+        Map<Integer, String> userLocation = mapService.getSingleUserLocation(uuid);
+        log.info("Got [address]: {} for [uuid]: {}",userLocation , uuid);
+        return UserLocationDto.from(userLocation);
     }
 
-    public Map<Integer, String> updateUserLocation(int uuid, String location) {
+    public UserLocationDto updateUserLocation(int uuid, String location) {
         log.info("Update Location for [uuid]: {}", uuid);
         UserLocationDto userLocationDto = UserLocationDto.builder().uuid(uuid).location(location).build();
         mapService.updateUserLocation(userLocationDto);
-        log.info("User Location updated. Old [location]: {}; New [location]: {}", mapService.getUserLocations().get(uuid), location);
-        return mapService.getUserLocations();
+        log.info("User Location updated. Old [location]: {}; New [location]: {}", mapService.getSingleUserLocation(uuid), location);
+        Map<Integer, String> userLocation = mapService.getSingleUserLocation(uuid);
+        log.info("Got [address]: {} for [uuid]: {}",userLocation , uuid);
+        return UserLocationDto.from(userLocation);
     }
 }

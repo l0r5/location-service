@@ -7,7 +7,9 @@ import java.util.Map;
 
 public interface OverallMapService {
 
-    Map<Integer, String> getUserLocations();
+    Map<Integer, String> getAllUserLocations();
+
+    Map<Integer, String> getSingleUserLocation(int uuid);
 
     void addUserLocation(UserLocationDto userLocationDto);
 

@@ -23,6 +23,19 @@ public class OverallMap implements OverallMapService {
     private Map<Integer, String> userLocations = new HashMap<>();
 
     @Override
+    public Map<Integer, String> getAllUserLocations() {
+        return this.userLocations;
+    }
+
+    @Override
+    public Map<Integer, String> getSingleUserLocation(int uuid) {
+        Map<Integer, String> result = new HashMap<>();
+        String location = this.userLocations.get(uuid);
+        result.put(uuid, location);
+        return result;
+    }
+
+    @Override
     public void addUserLocation(UserLocationDto userLocationDto) {
         this.userLocations.put(userLocationDto.getUuid(), userLocationDto.getLocation());
     }

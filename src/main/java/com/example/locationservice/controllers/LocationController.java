@@ -40,8 +40,8 @@ public class LocationController {
     }
 
     @GetMapping("/update-user-location")
-    public String updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
+    public UserLocationDto updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
         log.info("GET /update-user-location?uuid={}&address={} triggered.", uuid, location);
-        return locationService.updateUserLocation(uuid, location).toString();
+        return locationService.updateUserLocation(uuid, location);
     }
 }
