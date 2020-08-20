@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,12 +22,14 @@ public class LocationController {
     }
 
     @GetMapping("/overall-map")
+    @ResponseBody
     public OverallMapDto overallMap() {
         log.info("GET /overall-map triggered.");
         return locationService.getOverallMapDto();
     }
 
     @GetMapping("/add-user-location")
+    @ResponseBody
     public UserLocationDto addUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
         log.info("GET /add-user-location?uuid={} triggered.", uuid);
         locationService.addUserLocation(uuid, location);
@@ -34,6 +37,7 @@ public class LocationController {
     }
 
     @GetMapping("/get-user-location")
+    @ResponseBody
     public UserLocationDto getUserLocation(@RequestParam(value = "uuid") int uuid) {
         log.info("GET /get-user-location?uuid={} triggered.", uuid);
         return locationService.getUserLocation(uuid);
