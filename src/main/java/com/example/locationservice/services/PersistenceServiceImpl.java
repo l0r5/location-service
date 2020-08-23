@@ -1,7 +1,7 @@
 package com.example.locationservice.services;
 
 
-import com.example.locationservice.controllers.OverallMapControllerImp;
+import com.example.locationservice.controllers.OverallMapControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -25,7 +25,7 @@ public class PersistenceServiceImpl implements PersistenceService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public PersistenceServiceImpl(OverallMapControllerImp overallMapController) {
+    public PersistenceServiceImpl(OverallMapControllerImpl overallMapController) {
         this.overallMapController = overallMapController;
     }
 

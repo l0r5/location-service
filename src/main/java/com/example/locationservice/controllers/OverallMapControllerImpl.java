@@ -7,20 +7,18 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 
 @Component
-public class OverallMapControllerImp implements OverallMapController {
+public class OverallMapControllerImpl implements OverallMapController {
 
     private OverallMap overallMap;
 
     @PostConstruct
     public void init() {
-        this.overallMap = new OverallMap();
-        this.overallMap.setUserLocations(new ArrayList<>());
+        this.overallMap = new OverallMap( new ArrayList<>());
     }
 
     @Override

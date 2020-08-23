@@ -1,6 +1,6 @@
 package com.example.locationservice.controllers;
 
-import com.example.locationservice.services.OverallMapService;
+import com.example.locationservice.services.OverallMapController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -25,19 +25,19 @@ class LocationControllerTest {
     private MockMvc mvc;
 
     @Autowired
-    private OverallMapService overallMapService;
+    private OverallMapController overallMapController;
 
     @AfterEach
     void tearDown() {
-        overallMapService.clearMap();
-        log.info("Cleared Map after test run: {}", overallMapService.getAllUserLocations());
+        overallMapController.clearMap();
+        log.info("Cleared Map after test run: {}", overallMapController.getOverallMap());
     }
 
     @Test
     void emptyOverallMap() throws Exception {
         RequestBuilder request = MockMvcRequestBuilders.get("/overall-map");
         MvcResult result = mvc.perform(request).andReturn();
-        assertEquals("{\"locations\":{}}", result.getResponse().getContentAsString());
+        assertEquals("{\"locations\":[]}", result.getResponse().getContentAsString());
     }
 
     @Test
@@ -54,7 +54,7 @@ class LocationControllerTest {
         MvcResult resultAdd = mvc.perform(addUserLocationRequest).andReturn();
         MvcResult result = mvc.perform(request).andReturn();
         assertEquals("{\"uuid\":1,\"location\":\"my_location\"}", resultAdd.getResponse().getContentAsString());
-        assertEquals("{\"locations\":{\"1\":\"my_location\"}}", result.getResponse().getContentAsString());
+        assertEquals("{\"locations\":[{\"uuid\":1,\"location\":\"my_location\"}]}", result.getResponse().getContentAsString());
     }
 
     @Test
