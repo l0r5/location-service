@@ -44,7 +44,7 @@ class LocationRestControllerTest {
     }
 
     @Test
-    void addUserLocation() throws Exception {
+    void addUserLocation_happy_flow() throws Exception {
         UserLocationDto newUserLocationDto = UserLocationDto.builder()
                 .uuid(1)
                 .location("my_location")
@@ -59,6 +59,19 @@ class LocationRestControllerTest {
         assertFalse(overallMapController.getOverallMap().getUserLocations().isEmpty());
         assertEquals(1, overallMapController.getOverallMap().getUserLocations().size());
         assertEquals("OverallMap(id=0, userLocations=[UserLocation(uuid=1, location=my_location)])", overallMapController.getOverallMap().toString());
+    }
+
+    @Test
+    void addUserLocation_unhappy_flow_null() throws Exception {
+        UserLocationDto newUserLocationDto = null;
+        RequestBuilder request = MockMvcRequestBuilders.post("/add-user-location")
+                .content(asJsonString(newUserLocationDto))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON);
+
+        assertTrue(overallMapController.getOverallMap().getUserLocations().isEmpty());
+        mvc.perform(request).andReturn();
+        assertTrue(overallMapController.getOverallMap().getUserLocations().isEmpty());
     }
 
     @Test
