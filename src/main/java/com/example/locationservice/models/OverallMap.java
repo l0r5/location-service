@@ -1,52 +1,21 @@
 package com.example.locationservice.models;
 
-import com.example.locationservice.dtos.UserLocationDto;
-import com.example.locationservice.services.OverallMapService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.Collection;
 
 @Data
-@Entity
-@Component
-public class OverallMap implements OverallMapService {
+@AllArgsConstructor
+@NoArgsConstructor
+public class OverallMap {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    private long id;
 
-    @ElementCollection
-    private Map<Integer, String> userLocations = new HashMap<>();
+    private Collection<UserLocation> userLocations;
 
-    @Override
-    public Map<Integer, String> getAllUserLocations() {
-        return this.userLocations;
-    }
-
-    @Override
-    public Map<Integer, String> getSingleUserLocation(int uuid) {
-        Map<Integer, String> result = new HashMap<>();
-        String location = this.userLocations.get(uuid);
-        result.put(uuid, location);
-        return result;
-    }
-
-    @Override
-    public void addUserLocation(UserLocationDto userLocationDto) {
-        this.userLocations.put(userLocationDto.getUuid(), userLocationDto.getLocation());
-    }
-
-    @Override
-    public void updateUserLocation(UserLocationDto userLocationDto) {
-        this.userLocations.replace(userLocationDto.getUuid(), userLocationDto.getLocation());
-    }
-
-    @Override
-    public void clearMap() {
-        this.userLocations = new HashMap<>();
+    public OverallMap(Collection<UserLocation> userLocations) {
+        this.userLocations = userLocations;
     }
 }

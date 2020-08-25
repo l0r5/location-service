@@ -1,9 +1,8 @@
 package com.example.locationservice.dtos;
 
+import com.example.locationservice.models.UserLocation;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Map;
 
 
 @Data
@@ -12,8 +11,14 @@ public class UserLocationDto {
     private int uuid;
     private String location;
 
-    public static UserLocationDto from(Map<Integer, String> userLocation) {
-        Map.Entry<Integer, String> entry = userLocation.entrySet().iterator().next();
-        return UserLocationDto.builder().uuid(entry.getKey()).location(entry.getValue()).build();
+    public static UserLocationDto from(UserLocation userLocation) {
+        if(userLocation == null) {
+            return UserLocationDto.builder().build();
+        }
+        return UserLocationDto.builder().uuid(userLocation.getUuid()).location(userLocation.getLocation()).build();
+    }
+
+    public UserLocation toUserLocation() {
+        return UserLocation.builder().uuid(getUuid()).location(getLocation()).build();
     }
 }
