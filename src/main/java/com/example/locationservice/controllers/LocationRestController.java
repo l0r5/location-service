@@ -9,15 +9,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+@EnableSwagger2
 @RestController
-public class LocationController {
+public class LocationRestController {
 
-    private final Logger log = LoggerFactory.getLogger(LocationController.class);
+    private final Logger log = LoggerFactory.getLogger(LocationRestController.class);
 
     private final LocationService locationService;
 
-    public LocationController(LocationService locationService) {
+    public LocationRestController(LocationService locationService) {
         this.locationService = locationService;
     }
 

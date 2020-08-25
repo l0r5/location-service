@@ -16,9 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class LocationControllerTest {
+class LocationRestControllerTest {
 
-    private final Logger log = LoggerFactory.getLogger(LocationControllerTest.class);
+    private final Logger log = LoggerFactory.getLogger(LocationRestControllerTest.class);
 
     @Autowired
     private MockMvc mvc;
