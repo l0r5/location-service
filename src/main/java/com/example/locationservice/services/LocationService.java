@@ -1,5 +1,6 @@
 package com.example.locationservice.services;
 
+import com.example.locationservice.controllers.OverallMapController;
 import com.example.locationservice.dtos.OverallMapDto;
 import com.example.locationservice.dtos.UserLocationDto;
 import com.example.locationservice.models.OverallMap;
@@ -42,7 +43,7 @@ public class LocationService {
     public UserLocationDto getUserLocation(int uuid) {
         log.info("Get Location for [uuid]: {}", uuid);
         UserLocation userLocation = mapService.getSingleUserLocation(uuid);
-        log.info("Got [address]: {} for [uuid]: {}", userLocation.getLocation(), uuid);
+        log.info("Result [location]: {} for [uuid]: {}", userLocation.getLocation(), uuid);
         return UserLocationDto.from(userLocation);
     }
 

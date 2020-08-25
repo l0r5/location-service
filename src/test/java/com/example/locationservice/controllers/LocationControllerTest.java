@@ -1,6 +1,5 @@
 package com.example.locationservice.controllers;
 
-import com.example.locationservice.services.OverallMapController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

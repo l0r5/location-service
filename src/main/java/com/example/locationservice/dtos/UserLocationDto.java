@@ -12,6 +12,9 @@ public class UserLocationDto {
     private String location;
 
     public static UserLocationDto from(UserLocation userLocation) {
+        if(userLocation == null) {
+            return UserLocationDto.builder().build();
+        }
         return UserLocationDto.builder().uuid(userLocation.getUuid()).location(userLocation.getLocation()).build();
     }
 

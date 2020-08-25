@@ -1,7 +1,6 @@
 package com.example.locationservice.models;
 
-import com.example.locationservice.controllers.OverallMapControllerImpl;
-import com.example.locationservice.services.OverallMapController;
+import com.example.locationservice.controllers.OverallMapController;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,14 +13,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest(classes = {OverallMapControllerImpl.class})
+@SpringBootTest(classes = {OverallMapController.class})
 class OverallMapControllerTest {
 
     @Autowired
     private OverallMapController testee;
 
     @Autowired
-    private OverallMapControllerImpl impl;
+    private OverallMapController impl;
 
     private static final UserLocation testUserLocation1 = UserLocation.builder().uuid(1).location("user-1-test-location").build();
     private static final UserLocation testUserLocation2 = UserLocation.builder().uuid(2).location("user-2-test-location").build();
@@ -112,7 +111,7 @@ class OverallMapControllerTest {
 
     @Test
     void clearMap() {
-        OverallMapControllerImpl expectedOverallMapController = new OverallMapControllerImpl();
+        OverallMapController expectedOverallMapController = new OverallMapController();
         expectedOverallMapController.init();
         expectedOverallMapController.getOverallMap().setId(99999);
         expectedOverallMapController.getOverallMap().setUserLocations(new ArrayList<>());
