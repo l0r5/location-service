@@ -33,10 +33,9 @@ public class LocationService {
         return OverallMapDto.from(overallMap);
     }
 
-    public void addUserLocation(int uuid, String location) {
-        log.info("Add UserLocation for [uuid]: {}", uuid);
-        UserLocation newUserLocation = UserLocation.builder().uuid(uuid).location(location).build();
-        mapService.addUserLocation(newUserLocation);
+    public void addUserLocation(UserLocationDto userLocationDto) {
+        log.info("Add UserLocation for [uuid]: {}", userLocationDto.getUuid());
+        mapService.addUserLocation(userLocationDto.toUserLocation());
         log.info("Added new UserLocation to the OverallMap: {}", mapService.getOverallMap().toString());
     }
 
@@ -47,13 +46,11 @@ public class LocationService {
         return UserLocationDto.from(userLocation);
     }
 
-    public UserLocationDto updateUserLocation(int uuid, String location) {
-        log.info("Update Location for [uuid]: {}", uuid);
-        UserLocationDto userLocationDto = UserLocationDto.builder().uuid(uuid).location(location).build();
+    public UserLocationDto updateUserLocation(UserLocationDto userLocationDto) {
+        log.info("Update Location for [uuid]: {}", userLocationDto.getUuid());
         mapService.updateUserLocation(userLocationDto.toUserLocation());
-        log.info("User Location updated. Old [location]: {}; New [location]: {}", mapService.getSingleUserLocation(uuid), location);
-        UserLocation userLocation = mapService.getSingleUserLocation(uuid);
-        log.info("Got [address]: {} for [uuid]: {}", userLocation, uuid);
+        UserLocation userLocation = mapService.getSingleUserLocation(userLocationDto.getUuid());
+        log.info("Got [address]: {} for [uuid]: {}", userLocation, userLocation.getUuid());
         return UserLocationDto.from(userLocation);
     }
 }

@@ -5,10 +5,7 @@ import com.example.locationservice.dtos.UserLocationDto;
 import com.example.locationservice.services.LocationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -30,24 +27,25 @@ public class LocationRestController {
         return locationService.getOverallMapDto();
     }
 
-    @GetMapping("/add-user-location")
+    @PostMapping("/add-user-location")
     @ResponseBody
-    public UserLocationDto addUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
-        log.info("GET /add-user-location?uuid={} triggered.", uuid);
-        locationService.addUserLocation(uuid, location);
-        return locationService.getUserLocation(uuid);
+    public UserLocationDto addUserLocation(@RequestBody UserLocationDto userLocationDto) {
+        log.info("POST /add-user-location - Received: {}", userLocationDto.toString());
+        locationService.addUserLocation(userLocationDto);
+        return locationService.getUserLocation(userLocationDto.getUuid());
     }
 
     @GetMapping("/get-user-location")
     @ResponseBody
     public UserLocationDto getUserLocation(@RequestParam(value = "uuid") int uuid) {
-        log.info("GET /get-user-location?uuid={} triggered.", uuid);
+        log.info("GET /get-user-location?uuid={}", uuid);
         return locationService.getUserLocation(uuid);
     }
 
-    @GetMapping("/update-user-location")
-    public UserLocationDto updateUserLocation(@RequestParam(value = "uuid") int uuid, @RequestParam(value = "location") String location) {
-        log.info("GET /update-user-location?uuid={}&address={} triggered.", uuid, location);
-        return locationService.updateUserLocation(uuid, location);
+    @PostMapping("/update-user-location")
+    @ResponseBody
+    public UserLocationDto updateUserLocation(@RequestBody UserLocationDto userLocationDto) {
+        log.info("POST /update-user-location - Received: {}", userLocationDto.toString());
+        return locationService.updateUserLocation(userLocationDto);
     }
 }
